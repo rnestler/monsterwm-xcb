@@ -779,8 +779,7 @@ void maprequest(xcb_generic_event_t *e) {
     }
 
     /* might be useful in future */
-    geometry = xcb_get_geometry_reply(dis, xcb_get_geometry(dis, ev->window), NULL); /* TODO: error handling */
-    if (geometry) {
+    if ((geometry = xcb_get_geometry_reply(dis, xcb_get_geometry(dis, ev->window), NULL))) { /* TODO: error handling */
         DEBUGP("geom: %ux%u+%d+%d\n", geometry->width, geometry->height,
                                       geometry->x,     geometry->y);
         free(geometry);
@@ -1440,11 +1439,6 @@ client* wintoclient(xcb_window_t w) {
     }
     select_monitor(OLDM);
     return c;
-}
-
-int xerrorstart() {
-    die("error: another window manager is already running\n");
-    return -1;
 }
 
 int main(int argc, char *argv[]) {
