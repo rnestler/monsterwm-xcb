@@ -173,6 +173,7 @@ static void rotate_filled(const Arg *arg);
 static void run(void);
 static void save_desktop(int i);
 static void select_desktop(int i);
+static void fullscreen_toggle();
 static void setfullscreen(client *c, bool fullscrn);
 static int setup(int default_screen);
 static void sigchld();
@@ -959,9 +960,15 @@ void select_desktop(int i) {
     current_desktop = i;
 }
 
+void fullscreen_toggle() {
+    if (!current) return;
+    setfullscreen(current, !current->isfullscrn);
+}
+
 /* set or unset fullscreen state of client */
 void setfullscreen(client *c, bool fullscrn) {
     DEBUGP("xcb: set fullscreen: %d\n", fullscrn);
+    current->isfloating = fullscrn;
     long data[] = { fullscrn ? netatoms[NET_FULLSCREEN] : XCB_NONE };
     if (fullscrn != c->isfullscrn) xcb_change_property(dis, XCB_PROP_MODE_REPLACE, c->win, netatoms[NET_WM_STATE], XCB_ATOM_ATOM, 32, fullscrn, data);
     if ((c->isfullscrn = fullscrn)) xcb_move_resize(dis, c->win, 0, 0, ww, wh + PANEL_HEIGHT);
