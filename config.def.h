@@ -48,6 +48,7 @@ static const char *menucmd[] = { "dmenu_run", NULL };
 /** Shortcuts **/
 static key keys[] = {
     /* modifier          key            function           argument */
+    {  MOD1,             XK_f,          fullscreen_toggle, {NULL}},
     {  MOD1,             XK_b,          togglepanel,       {NULL}},
     {  MOD1,             XK_BackSpace,  focusurgent,       {NULL}},
     {  MOD1|SHIFT,       XK_c,          killclient,        {NULL}},
